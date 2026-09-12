@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Form - Dog Biscuits</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.5;
+    color: #222;
+  }
+  h1 { font-size: 1.4rem; margin-bottom: 4px; }
+  p.sub { color: #555; margin-top: 0; }
+  .video-wrap {
+    background: #000;
+    color: #fff;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .video-wrap video { width: 100%; height: 100%; }
+  fieldset {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  legend { font-weight: 600; padding: 0 6px; }
+  label { display: block; margin-top: 10px; font-size: 0.9rem; font-weight: 500; }
+  input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 0.95rem;
+  }
+  textarea { min-height: 60px; resize: vertical; }
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin-top: 0;
+  }
+  .check-item input { width: auto; margin-top: 0; }
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .btn-primary { background: #111; color: #fff; }
+  .btn-primary:disabled { background: #999; cursor: not-allowed; }
+  .btn-paypal { background: #ffc439; color: #111; font-weight: 600; }
+  .note { font-size: 0.8rem; color: #666; margin-top: 4px; }
+  .confirm {
+    display: none;
+    background: #eaffea;
+    border: 1px solid #7ec97e;
+    padding: 16px;
+    border-radius: 6px;
+    margin-top: 16px;
+  }
+  .admin {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 2px dashed #ccc;
+  }
+  .admin h2 { font-size: 1rem; }
+  .order-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+  }
+  .order-card b { display: inline-block; width: 110px; }
+  .todo {
+    background: #fff7e0;
+    border: 1px solid #e0c060;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="todo">
+  <b>Build notes (remove before going live):</b>
+  Formspree endpoint is wired in — submit a test order once deployed to confirm it lands in your inbox
+  (remember: the very first submission needs manual confirmation in your Formspree dashboard).
+  PayPal button below opens your real PayPal.me link (obrienfamily6). It has no fixed amount, so the customer will need to
+  type in the amount that matches what they picked above — worth calling that out clearly on the page once you style it, or
+  look at a dynamic PayPal.me link (e.g. paypal.me/obrienfamily6/5) per price tier down the track.
+  Orders currently save to a shared log at the bottom of this page (visible to anyone with the link) since email notifications
+  aren't wired up yet — next step is to connect Formspree, EmailJS, or Zapier so orders email you directly and stop appearing here.
+</div>
+
+<h1>Fresh Dog Biscuits, Baked Locally</h1>
+<p class="sub">We started this because our own dog wouldn't touch anything from the supermarket shelf, and once we began baking small batches at home, everyone in the street wanted in. Every biscuit is made with real, simple ingredients, no fillers or nasties, in small batches close to home rather than mass-produced. Backing a business like this means fresher treats for your dog, a direct relationship with the people actually making them, and support for something local rather than another shelf of mystery ingredients at the shop. Watch the quick video below, then tell us about your dog and place your order.</p>
+
+<div class="video-wrap" id="videoWrap">
+  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/w2auk7ila-w" title="Good Dog Goodies" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<form id="orderForm">
+  <fieldset>
+    <legend>Your details</legend>
+    <label for="name">Your name</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" required>
+
+    <label for="mobile">Mobile number</label>
+    <input type="tel" id="mobile" required>
+
+    <label for="address">Delivery address</label>
+    <textarea id="address" required></textarea>
+  </fieldset>
+
+  <fieldset>
+    <legend>About your dog</legend>
+    <label for="dogName">Dog's name</label>
+    <input type="text" id="dogName" required>
+
+    <label for="dogInfo">Any allergies</label>
+    <textarea id="dogInfo" placeholder="e.g. no known allergies"></textarea>
+
+    <label for="interests">Special interests / preferences</label>
+    <textarea id="interests" placeholder="e.g. loves peanut butter, favourite toys, anything they go nuts for"></textarea>
+  </fieldset>
+
+  <fieldset>
+    <legend>Choose your order</legend>
+    <label>Cookies</label>
+    <div class="check-grid" style="grid-template-columns: 1fr;">
+      <label class="check-item"><input type="radio" name="orderQty" value="1 cookie - $2"> 1 cookie (50g) — $2</label>
+      <label class="check-item"><input type="radio" name="orderQty" value="3 cookies - $5"> 3 cookies — $5</label>
+    </div>
+
+    <label>Popcorn</label>
+    <div class="check-grid" style="grid-template-columns: 1fr;">
+      <label class="check-item"><input type="radio" name="popcorn" value="1 popcorn bag - $2"> 1 bag (500g) — $2</label>
+      <label class="check-item"><input type="radio" name="popcorn" value="3 popcorn bags - $5"> 3 bags — $5</label>
+    </div>
+
+    <p class="note"><b>Cookie ingredients:</b> chickpea flour, pure pumpkin, 100% smooth peanut butter (no xylitol or added sweeteners), water. Shelf life: 1 week.</p>
+    <p class="note"><b>Popcorn ingredients:</b> popping corn kernels, smooth natural peanut butter (no sweetener or xylitol), hot water. Shelf life: 2 weeks.</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Delivery requests</legend>
+    <label>Preferred day(s)</label>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="deliveryDay" value="Monday"> Monday</label>
+      <label class="check-item"><input type="checkbox" name="deliveryDay" value="Tuesday"> Tuesday</label>
+      <label class="check-item"><input type="checkbox" name="deliveryDay" value="Wednesday"> Wednesday</label>
+      <label class="check-item"><input type="checkbox" name="deliveryDay" value="Thursday"> Thursday</label>
+      <label class="check-item"><input type="checkbox" name="deliveryDay" value="Friday"> Friday</label>
+    </div>
+
+    <label>Preferred time window(s)</label>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="deliveryWindow" value="8am-10am"> 8am - 10am</label>
+      <label class="check-item"><input type="checkbox" name="deliveryWindow" value="10am-12pm"> 10am - 12pm</label>
+      <label class="check-item"><input type="checkbox" name="deliveryWindow" value="12pm-2pm"> 12pm - 2pm</label>
+      <label class="check-item"><input type="checkbox" name="deliveryWindow" value="2pm-4pm"> 2pm - 4pm</label>
+      <label class="check-item"><input type="checkbox" name="deliveryWindow" value="4pm-6pm"> 4pm - 6pm</label>
+      <label class="check-item"><input type="checkbox" name="deliveryWindow" value="6pm-8pm"> 6pm - 8pm</label>
+    </div>
+  </fieldset>
+
+  <a href="https://www.paypal.me/obrienfamily6" target="_blank" rel="noopener">
+    <button type="button" class="btn-paypal">Pay with PayPal</button>
+  </a>
+
+  <label style="display:flex; align-items:center; gap:8px; font-weight:400; margin-top:10px;">
+    <input type="checkbox" id="paidConfirm" style="width:auto;">
+    I've completed payment via PayPal
+  </label>
+  <p class="note">Opens PayPal in a new tab. Come back, tick the box above once you've paid — the submit button unlocks once it's ticked.</p>
+
+  <button type="submit" class="btn-primary" id="submitBtn" disabled>Submit order</button>
+</form>
+
+<div class="confirm" id="confirmBox">
+  ✅ Thanks! Your order's in — we'll be in touch about delivery.
+</div>
+
+<script>
+// TODO: replace with your real Formspree endpoint, e.g. https://formspree.io/f/abcd1234
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mvkoyjgy";
+
+document.getElementById('paidConfirm').addEventListener('change', (e) => {
+  document.getElementById('submitBtn').disabled = !e.target.checked;
+});
+
+document.getElementById('orderForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const orderQty = document.querySelector('input[name="orderQty"]:checked');
+  const popcorn = document.querySelector('input[name="popcorn"]:checked');
+  const days = Array.from(document.querySelectorAll('input[name="deliveryDay"]:checked')).map(el => el.value);
+  const windows = Array.from(document.querySelectorAll('input[name="deliveryWindow"]:checked')).map(el => el.value);
+  const order = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    mobile: document.getElementById('mobile').value,
+    address: document.getElementById('address').value,
+    dogName: document.getElementById('dogName').value,
+    dogInfo: document.getElementById('dogInfo').value,
+    interests: document.getElementById('interests').value,
+    order: orderQty ? orderQty.value : '(none selected)',
+    popcorn: popcorn ? popcorn.value : '(none selected)',
+    deliveryDays: days.join(', ') || '-',
+    deliveryWindows: windows.join(', ') || '-',
+    submittedAt: new Date().toISOString()
+  };
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(order)
+    });
+    if (res.ok) {
+      document.getElementById('orderForm').style.display = 'none';
+      document.getElementById('confirmBox').style.display = 'block';
+    } else {
+      throw new Error('Formspree returned an error');
+    }
+  } catch (err) {
+    alert('Something went wrong sending your order — please try again.');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit order';
+  }
+});
+</script>
+
+</body>
+</html>
